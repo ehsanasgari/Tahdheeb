@@ -6,8 +6,12 @@ current_file_path = os.path.abspath(__file__)
 current_dir = os.path.dirname(current_file_path)
 module_path = os.path.join(current_dir, '..')
 sys.path.append(module_path)
-
 from arabic_utility.num_util import ArabicNumerics
+from arabic_utility.punc_util import ArabicPunctuations
+from arabic_utility.diac_util import ArabicDiacritics
+
+import string
+
 class ArabicChars(object):
     arabic_normalizations = {'chars':
                              # Pair-REVIEWED Horuf
@@ -89,6 +93,20 @@ class ArabicChars(object):
         ("ﷸ", "وسلم"),
         ("ﻵ|ﻶ|ﻷ|ﻸ|ﻹ|ﻺ|ﻻ|ﻼ", "لا"),
     ]
+
+    arabic_normalizations_2nd_phase_extensive = [
+        # REVIEWED Horuf
+        (r"ا|إ|أ", r"ا"),
+        (r"ؤ|و", r"و"),
+        (r"ه|ة", r"ه"),
+        (r"ي|ى", r"ى"),
+    ]
+
+    # used from HAZM
+    persion_translation_src = "ؠػػؽؾؿكيٮٯٷٸٹٺٻټٽٿڀځٵٶٷٸٹٺٻټٽٿڀځڂڅڇڈډڊڋڌڍڎڏڐڑڒړڔڕږڗڙښڛڜڝڞڟڠڡڢڣڤڥڦڧڨڪګڬڭڮڰڱڲڳڴڵڶڷڸڹںڻڼڽھڿہۂۃۄۅۆۇۈۉۊۋۏۍێېۑےۓەۮۯۺۻۼۿݐݑݒݓݔݕݖݗݘݙݚݛݜݝݞݟݠݡݢݣݤݥݦݧݨݩݪݫݬݭݮݯݰݱݲݳݴݵݶݷݸݹݺݻݼݽݾݿࢠࢡࢢࢣࢤࢥࢦࢧࢨࢩࢪࢫࢮࢯࢰࢱࢬࢲࢳࢴࢶࢷࢸࢹࢺࢻࢼࢽﭐﭑﭒﭓﭔﭕﭖﭗﭘﭙﭚﭛﭜﭝﭞﭟﭠﭡﭢﭣﭤﭥﭦﭧﭨﭩﭮﭯﭰﭱﭲﭳﭴﭵﭶﭷﭸﭹﭺﭻﭼﭽﭾﭿﮀﮁﮂﮃﮄﮅﮆﮇﮈﮉﮊﮋﮌﮍﮎﮏﮐﮑﮒﮓﮔﮕﮖﮗﮘﮙﮚﮛﮜﮝﮞﮟﮠﮡﮢﮣﮤﮥﮦﮧﮨﮩﮪﮫﮬﮭﮮﮯﮰﮱﺀﺁﺃﺄﺅﺆﺇﺈﺉﺊﺋﺌﺍﺎﺏﺐﺑﺒﺕﺖﺗﺘﺙﺚﺛﺜﺝﺞﺟﺠﺡﺢﺣﺤﺥﺦﺧﺨﺩﺪﺫﺬﺭﺮﺯﺰﺱﺲﺳﺴﺵﺶﺷﺸﺹﺺﺻﺼﺽﺾﺿﻀﻁﻂﻃﻄﻅﻆﻇﻈﻉﻊﻋﻌﻍﻎﻏﻐﻑﻒﻓﻔﻕﻖﻗﻘﻙﻚﻛﻜﻝﻞﻟﻠﻡﻢﻣﻤﻥﻦﻧﻨﻩﻪﻫﻬﻭﻮﻯﻰﻱﻲﻳﻴىكي“” "
+    persion_translation_dst = (
+        'یککیییکیبقویتتبتتتبحاوویتتبتتتبحححچدددددددددررررررررسسسصصطعففففففققکککککگگگگگللللنننننهچهههوووووووووییییییهدرشضغهبببببببححددرسعععففکککممنننلررسححسرحاایییووییحسسکببجطفقلمییرودصگویزعکبپتریفقنااببببپپپپببببتتتتتتتتتتتتففففححححححححچچچچچچچچددددددددژژررککککگگگگگگگگگگگگننننننههههههههههییییءاااووااییییااببببتتتتثثثثججججححححخخخخددذذررززسسسسششششصصصصضضضضططططظظظظععععغغغغففففققققککککللللممممننننههههوویییییییکی"" '
+    )
     def __init__(self):
 
         # Numbers
@@ -96,20 +114,23 @@ class ArabicChars(object):
         self.english_num = ArabicNumerics.arabic_number_translation_dst
 
         # Arabic chars
-        l1 = list(''.join(list(set([y + ''.join(x.split('|')) for x, y in ArabicChars.arabic_normalizations['chars']]))))
-        l2 = list(''.join([''.join(x.split('|')) for x, y in ArabicChars.replacements]))
-        self.arabic_all_alpha = ''.join(list(set(l1+l2)))
-        self.arabic_normal_alpha = ''.join(list(set([y for x,y in ArabicChars.arabic_normalizations['chars']])))
+        templ1 = ''.join([y + ''.join(x.split('|')) for x, y in ArabicChars.arabic_normalizations['chars']])
+        templ2 = ''.join([''.join(x.split('|')) for x, y in ArabicChars.replacements])
+        self.arabic_all_alpha = ArabicChars.sort_char_list(templ1+templ2)
+        self.arabic_normal_alpha = ArabicChars.sort_char_list(''.join([y for x,y in ArabicChars.arabic_normalizations['chars']]))
 
         # Diac. chars
-        self.arabic_all_diac = ''.join(list(set(list(
-            ''.join(list(set([y + ''.join(x.split('|')) for x, y in ArabicChars.arabic_normalizations['diac']])))))))
-        self.arabic_normal_diac = ''.join(list(set([y for x, y in ArabicChars.arabic_normalizations['diac']])))
+        self.base_diac = ArabicDiacritics.diacritics
+        self.arabic_all_diac = ArabicChars.sort_char_list(self.base_diac+
+            ''.join([y + ''.join(x.split('|')) for x, y in ArabicChars.arabic_normalizations['diac']]))
+        self.arabic_normal_diac_quranic = ArabicChars.sort_char_list(ArabicDiacritics.quranic_symbols)
+        self.arabic_normal_diac = ArabicChars.sort_char_list(self.base_diac+''.join([y for x, y in ArabicChars.arabic_normalizations['diac']]))
 
         # Punc. chars
-        self.arabic_all_punc = ''.join(list(set(list(
-            ''.join(list(set([y + ''.join(x.split('|')) for x, y in ArabicChars.arabic_normalizations['punc']])))))))
-        self.arabic_normal_punc = ''.join(list(set([y for x, y in ArabicChars.arabic_normalizations['punc']])))
+        self.english_punc = string.punctuation
+        self.base_punc = self.english_punc+'\t \n'+string.punctuation+ArabicPunctuations.punc_before+ArabicPunctuations.punc_others+ArabicPunctuations.punc_after
+        self.arabic_all_punc = ArabicChars.sort_char_list(self.base_punc+''.join([y + ''.join(x.split('|')) for x, y in ArabicChars.arabic_normalizations['punc']]))
+        self.arabic_normal_punc = ArabicChars.sort_char_list(self.base_punc+''.join([y for x, y in ArabicChars.arabic_normalizations['punc']]))
 
         # Define the regex for non-Arabic characters
         # | Component                                          | Description                                                                                   | Examples                        |
@@ -136,7 +157,18 @@ class ArabicChars(object):
         # | `؟`                                                | Arabic question mark                                                                         | ؟                               |
         # | `+`                                                | Matches one or more of the preceding token                                                   |                                 |
 
+        # Normalized Characterset in Arabic
+        self.norm_in_arabic = ArabicChars.sort_char_list(self.arabic_normal_alpha+self.arabic_normal_punc+self.arabic_normal_diac+self.english_num) #,self.arabic_normal_diac_quranic
+        temp_str = '[^\w'+self.norm_in_arabic+']+'
+        self.allowed_chars_pattern_normalized = re.compile(temp_str)
+        temp_str = '[^'+self.norm_in_arabic+']+'
+        self.allowed_only_arabic_chars_pattern_normalized = re.compile(temp_str)
         self.non_arabic_regex = re.compile(
             "[^0-9\u0600-\u06ff\u0750-\u077f\ufb50-\ufbc1\ufbd3-\ufd3f\ufd50-\ufd8f\ufd50-\ufd8f\ufe70-\ufefc\uFDF0-\uFDFD.0-9\s.,!?;،:؛»«؟]+")
 
-
+        self.repetition_normalized = ArabicChars.sort_char_list(self.arabic_normal_alpha+"!?؟")
+    @staticmethod
+    def sort_char_list(charlist_str):
+        unique_charlist = list(set(list(charlist_str)))
+        unique_charlist.sort()
+        return ''.join(unique_charlist)

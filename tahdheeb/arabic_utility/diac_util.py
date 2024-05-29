@@ -15,7 +15,8 @@ class ArabicDiacritics(object):
     # | \u0652  | ْ         | Sukun               | سكون               | Indicates the absence of a vowel.                    |
     # | \u0653  | ٓ         | Maddah              | مدّة                | Indicates a long vowel sound.                        |
     # | \u0670  | ٰ         | Superscript Alif    | ألف خنجرية         | Indicates a short "a" sound, mainly in Quranic text. |
-    diacritics_re = re.compile("[\u064b\u064c\u064d\u064e\u064f\u0650\u0651\u0652\u0653\u0670]")
+    diacritics = "\u064b\u064c\u064d\u064e\u064f\u0650\u0651\u0652\u0653\u0670"
+    diacritics_re = re.compile(F"[{diacritics}]")
     # Quranic Symbols to be included
     # | Unicode | Diacritic | Name (English)      | Name (Arabic)       | Description                                          |
     # |---------|-----------|---------------------|---------------------|------------------------------------------------------|
@@ -29,7 +30,8 @@ class ArabicDiacritics(object):
     # | \u06e9  | ۩         | Place of Sajda                                   | علامة السجدة | Indicates the place where a prostration should be made during the recitation of the Quran.         |
     # | \u06e7  | ۧ         | Small High Yeh                                   | علامة وقف  | Represents a small high Yeh, used as a stop mark.                                                 |
     # | \u06e8  | ۨ         | Small High Noon                                  | علامة وقف  | Indicates a small high Noon, used as a stop mark.                                                 |
-    quranic_symbols_re = re.compile("[\u06d6\u06d7\u06d8\u06d9\u06da\u06db\u06dc\u06e9\u06e7\u06e8]")
+    quranic_symbols = "\u06d6\u06d7\u06d8\u06d9\u06da\u06db\u06dc\u06e9\u06e7\u06e8"
+    quranic_symbols_re = re.compile(F"[{quranic_symbols}]")
     def __init__(self):
         pass
 

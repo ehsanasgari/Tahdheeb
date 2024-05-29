@@ -39,11 +39,15 @@ class ArabicStructure(object):
                 (r"(["+self.ArabicChars.arabic_all_alpha+"])(\d"+ArabicNumerics.arabic_number_translation_src+ArabicNumerics.arabic_number_translation_dst+")", r"\1 \2")])
         self.pattern_spaces = re.compile(r'\s+')
 
-    def preprocess(self,text):
+    def preprocess(self,text, remove_english=False):
         """
         :param text: str
         :return: add space before and after of punctuations
         """
+        if remove_english:
+            en_chars = re.compile(r'[a-zA-Z]')
+            text = re.sub(en_chars, '', text)
+
         for pattern, repl in self.punctuation_add_spacing_patterns:
             text = pattern.sub(repl, text)
         text = re.sub(self.pattern_spaces, ' ', text)

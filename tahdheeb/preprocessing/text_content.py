@@ -13,13 +13,7 @@ from arabic_utility.diac_util import ArabicDiacritics
 class ArabicTextProcess(object):
     def __init__(self):
 
-        self.arabic_normalizations_2nd_phase_extensive = [
-            # REVIEWED Horuf
-            (r"ا|إ|أ", r"ا"),
-            (r"ؤ|و", r"و"),
-            (r"ه|ة", r"ه"),
-            (r"ي|ى", r"ى"),
-        ]
+        self.ArabicChars = ArabicChars()
 
         self.alpha_regex = dict()
         for _, arabic_normalizations in ArabicChars.arabic_normalizations.items():
@@ -27,17 +21,11 @@ class ArabicTextProcess(object):
                 self.alpha_regex[y] = re.compile(x)
 
         self.beta_regex = dict()
-        for x, y in self.arabic_normalizations_2nd_phase_extensive:
+        for x, y in ArabicChars.arabic_normalizations_2nd_phase_extensive:
             self.beta_regex[y] = re.compile(x)
 
         self.number_translate = str.maketrans(
             dict(zip(list(ArabicNumerics.arabic_number_translation_src), list(ArabicNumerics.arabic_number_translation_dst))))
-
-        # used from HAZM
-        self.persion_translation_src = "ؠػػؽؾؿكيٮٯٷٸٹٺٻټٽٿڀځٵٶٷٸٹٺٻټٽٿڀځڂڅڇڈډڊڋڌڍڎڏڐڑڒړڔڕږڗڙښڛڜڝڞڟڠڡڢڣڤڥڦڧڨڪګڬڭڮڰڱڲڳڴڵڶڷڸڹںڻڼڽھڿہۂۃۄۅۆۇۈۉۊۋۏۍێېۑےۓەۮۯۺۻۼۿݐݑݒݓݔݕݖݗݘݙݚݛݜݝݞݟݠݡݢݣݤݥݦݧݨݩݪݫݬݭݮݯݰݱݲݳݴݵݶݷݸݹݺݻݼݽݾݿࢠࢡࢢࢣࢤࢥࢦࢧࢨࢩࢪࢫࢮࢯࢰࢱࢬࢲࢳࢴࢶࢷࢸࢹࢺࢻࢼࢽﭐﭑﭒﭓﭔﭕﭖﭗﭘﭙﭚﭛﭜﭝﭞﭟﭠﭡﭢﭣﭤﭥﭦﭧﭨﭩﭮﭯﭰﭱﭲﭳﭴﭵﭶﭷﭸﭹﭺﭻﭼﭽﭾﭿﮀﮁﮂﮃﮄﮅﮆﮇﮈﮉﮊﮋﮌﮍﮎﮏﮐﮑﮒﮓﮔﮕﮖﮗﮘﮙﮚﮛﮜﮝﮞﮟﮠﮡﮢﮣﮤﮥﮦﮧﮨﮩﮪﮫﮬﮭﮮﮯﮰﮱﺀﺁﺃﺄﺅﺆﺇﺈﺉﺊﺋﺌﺍﺎﺏﺐﺑﺒﺕﺖﺗﺘﺙﺚﺛﺜﺝﺞﺟﺠﺡﺢﺣﺤﺥﺦﺧﺨﺩﺪﺫﺬﺭﺮﺯﺰﺱﺲﺳﺴﺵﺶﺷﺸﺹﺺﺻﺼﺽﺾﺿﻀﻁﻂﻃﻄﻅﻆﻇﻈﻉﻊﻋﻌﻍﻎﻏﻐﻑﻒﻓﻔﻕﻖﻗﻘﻙﻚﻛﻜﻝﻞﻟﻠﻡﻢﻣﻤﻥﻦﻧﻨﻩﻪﻫﻬﻭﻮﻯﻰﻱﻲﻳﻴىكي“” "
-        self.persion_translation_dst = (
-            'یککیییکیبقویتتبتتتبحاوویتتبتتتبحححچدددددددددررررررررسسسصصطعففففففققکککککگگگگگللللنننننهچهههوووووووووییییییهدرشضغهبببببببححددرسعععففکککممنننلررسححسرحاایییووییحسسکببجطفقلمییرودصگویزعکبپتریفقنااببببپپپپببببتتتتتتتتتتتتففففححححححححچچچچچچچچددددددددژژررککککگگگگگگگگگگگگننننننههههههههههییییءاااووااییییااببببتتتتثثثثججججححححخخخخددذذررززسسسسششششصصصصضضضضططططظظظظععععغغغغففففققققککککللللممممننننههههوویییییییکی"" '
-        )
 
         # used from HAZM
         self.extra_patterns = [
@@ -59,12 +47,12 @@ class ArabicTextProcess(object):
         ]
 
         # modified from HAZM
-        self.general_repeat = (
-            re.compile(r'([ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىي!?؟])\1{2,}')
-        )
+        #print(self.ArabicChars.repetition_normalized)
+        self.general_repeat = re.compile(r"([!?؟ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىي])\1{2,}")
 
 
-    def get_arabic_normalized_pretokenization(self, text, remove_non_arabic=True):
+
+    def get_arabic_normal(self, text, extensive_normalization=False):
 
         for old, new in ArabicChars.replacements:
             text = re.sub(old, new, text)
@@ -72,6 +60,11 @@ class ArabicTextProcess(object):
         # normalize the chars
         for alternative, regx in self.alpha_regex.items():
             text = re.sub(regx, alternative, text)
+
+        # in case of extensive
+        if extensive_normalization:
+            for alternative, regx in self.beta_regex.items():
+                text = re.sub(regx, alternative, text)
 
         # normalize the numbers
         text = text.translate(self.number_translate)
@@ -89,38 +82,6 @@ class ArabicTextProcess(object):
             two_repeat = re.sub(self.general_repeat, r"\1\1", word)
             text = text.replace(word, two_repeat)
 
-        allowed_chars_pattern = re.compile(
-            r'[^\w+"\'()\-\.:,!?;،؛»«؟<>ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىي0123456789% \u064b\u064c\u064d\u0652\u064e\u064f\u0650\u0651\u0652\u0653\u0670\u06d6\u06d7\u06d8\u06d9\u06da\u06db\u06dc\u06e9\u06e7\u06e8]+')
-
-        cleaned_text = text
-        if remove_non_arabic:
-            en_chars = re.compile(r'[a-zA-Z]')
-            cleaned_text = re.sub(en_chars, '', text)
-        cleaned_text = re.sub(allowed_chars_pattern, '', cleaned_text)
+        cleaned_text = re.sub(self.ArabicChars.allowed_chars_pattern_normalized, '', text)
 
         return cleaned_text
-
-    def get_arabic_normalized(self, text):
-
-        for old, new in self.replacements:
-            text = re.sub(old, new, text)
-
-        # normalize the chars
-        for alternative, regx in self.alpha_regex.items():
-            text = re.sub(regx, alternative, text)
-
-        # normalize the numbers
-        text = text.translate(self.number_translate)
-
-        for x, y in self.extra_patterns + self.arabic_style_patterns:
-            text = re.sub(x, y, text)
-
-        matches = re.finditer(self.general_repeat, text)
-
-        for m in matches:
-            word = m.group()
-            # no_repeat = re.sub(self.general_repeat, r"\1", word)
-            two_repeat = re.sub(self.general_repeat, r"\1\1", word)
-            text = text.replace(word, two_repeat)
-
-        return text

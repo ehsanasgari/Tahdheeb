@@ -1,18 +1,31 @@
-
-import re
 import os,sys
 current_file_path = os.path.abspath(__file__)
 current_dir = os.path.dirname(current_file_path)
 module_path = os.path.join(current_dir, '..')
 sys.path.append(module_path)
 from tahdheeb.preprocessing.text_content import ArabicTextProcess
+from tahdheeb.preprocessing.text_verification import ArabicTextVerify
 from tahdheeb.preprocessing.text_structure import ArabicStructure
 
-text = 'سال ( تنت ٢ ) ٣متر. و الي : ds '
 
+text = 'الـــــــــسلام    عليكم . كيـــف    حالك ؟ أتـــمنى أن تكون بــــــخير .أ نحنو  هنا للمســـــاعدة ...هل  تريــــد شيء مـــا؟  الرجـــــــاء    إبلاغن ا بــــأي وقــــت! في ٢دقيقه شكرا ، جزيــــلا Thanks!'
+
+# fixing punc issue and text structure
 ATB = ArabicStructure()
-text = ATB.preprocess(text)
+# preprocessing the text
 ASP = ArabicTextProcess()
-text = ASP.get_arabic_normalized_pretokenization(text)
 
-print(text)
+ATP=ArabicTextVerify()
+print('Ratio of Arabic text:', ATP.check_arabic_ratio(text))
+
+print('\ntext before struct improving:\n', text, '\n-----------\n')
+text = ATB.preprocess(text, remove_english=True)
+print('\ntext after struct improving:\n', text, '\n-----------\n')
+text = ASP.get_arabic_normal(text,  extensive_normalization=False)
+print('\ntext after normalizing:\n', text, '\n-----------\n')
+text = ASP.get_arabic_normal(text, extensive_normalization=True)
+print('\ntext after extensive normalizing:\n', text, '\n-----------\n')
+
+
+
+
