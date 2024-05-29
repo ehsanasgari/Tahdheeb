@@ -21,7 +21,7 @@ This library provides tools for preprocessing Arabic text, including normalizati
 You can install Tahdheeb using pip:
 
 ```bash
-pip install src
+pip install tahdheeb
 ```
 
 ## Example Usage
