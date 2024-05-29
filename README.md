@@ -2,8 +2,12 @@
 
 ## Overview
 
-Tahdheeb (تهذیب) is an Arabic Preprocessing Library developed by Ehsaneddin Asgari and Yassine Elkheir at Qatar Computing Research. 
+Tahdheeb (تهذیب) is an Arabic Preprocessing Library developed at Qatar Computing Research. 
 This library provides tools for preprocessing Arabic text, including normalization, diacritics handling, number normalization, punctuation correction, and more.
+
+### Develpers
+- Ehsaneddin Asgari 
+- Yassine Elkheir
 
 ## Features
 
