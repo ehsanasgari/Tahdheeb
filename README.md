@@ -21,7 +21,7 @@ This library provides tools for preprocessing Arabic text, including normalizati
 You can install Tahdheeb using pip:
 
 ```bash
-pip install tahdheeb
+pip install src
 ```
 
 ## Example Usage
@@ -31,9 +31,9 @@ The following example demonstrates how to use the `Tahdheeb` library for preproc
 ### Code Example
 
 ```python
-from tahdheeb.preprocessing.text_content import ArabicTextProcess
-from tahdheeb.preprocessing.text_verification import ArabicTextVerify
-from tahdheeb.preprocessing.text_structure import ArabicStructure
+from src.preprocessing.text_content import ArabicTextProcess
+from src.preprocessing.text_verification import ArabicTextVerify
+from src.preprocessing.text_structure import ArabicStructure
 
 text = 'الـــــــــسلام    عليكم . كيـــف    حالك ؟ أتـــمنى أن تكون بــــــخير .أ نحنو  هنا للمســـــاعدة ...هل  تريــــد شيء مـــا؟  الرجـــــــاء    إبلاغن ا بــــأي وقــــت! في ٢دقيقه شكرا ، جزيــــلا Thanks!'
 
@@ -65,9 +65,9 @@ print('\nText after extensive normalizing:\n', text, '\n-----------\n')
 #### Import Libraries
 
 ```python
-from tahdheeb.preprocessing.text_content import ArabicTextProcess
-from tahdheeb.preprocessing.text_verification import ArabicTextVerify
-from tahdheeb.preprocessing.text_structure import ArabicStructure
+from src.preprocessing.text_content import ArabicTextProcess
+from src.preprocessing.text_verification import ArabicTextVerify
+from src.preprocessing.text_structure import ArabicStructure
 ```
 
 #### Original Text

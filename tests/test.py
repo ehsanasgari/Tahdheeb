@@ -3,9 +3,9 @@ current_file_path = os.path.abspath(__file__)
 current_dir = os.path.dirname(current_file_path)
 module_path = os.path.join(current_dir, '..')
 sys.path.append(module_path)
-from tahdheeb.preprocessing.text_content import ArabicTextProcess
-from tahdheeb.preprocessing.text_verification import ArabicTextVerify
-from tahdheeb.preprocessing.text_structure import ArabicStructure
+from src.preprocessing.text_content import ArabicTextProcess
+from src.preprocessing.text_verification import ArabicTextVerify
+from src.preprocessing.text_structure import ArabicStructure
 
 
 text = 'الـــــــــسلام    عليكم . كيـــف    حالك ؟ أتـــمنى أن تكون بــــــخير .أ نحنو  هنا للمســـــاعدة ...هل  تريــــد شيء مـــا؟  الرجـــــــاء    إبلاغن ا بــــأي وقــــت! في ٢دقيقه شكرا ، جزيــــلا Thanks!'
