@@ -5,9 +5,9 @@
 Tahdheeb (تهذیب) is an Arabic Preprocessing Library developed at Qatar Computing Research. 
 This library provides tools for preprocessing Arabic text, including normalization, diacritics handling, number normalization, punctuation correction, and more.
 
-### Develpers
+### Developers
 - Ehsaneddin Asgari 
-- Yassine Elkheir
+- Yassine El Kheir
 
 ## Features
 
@@ -21,7 +21,7 @@ This library provides tools for preprocessing Arabic text, including normalizati
 You can install Tahdheeb using pip:
 
 ```bash
-pip install tahdheeb
+pip install Tahdheeb
 ```
 
 ## Example Usage
