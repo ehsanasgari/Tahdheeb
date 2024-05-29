@@ -35,14 +35,3 @@ class ArabicDiacritics(object):
     def __init__(self):
         pass
 
-    @staticmethod
-    def remove_diacritics( text):
-        return ArabicDiacritics.diacritics_re.sub('', text)
-
-    @staticmethod
-    def contains_diacritics( word):
-        return bool(ArabicDiacritics.diacritics_re.search(word))
-
-    @staticmethod
-    def contains_10per_diacritics( word):
-        return (len(ArabicDiacritics.diacritics_re.findall(word)) / len(word)) > 0.1

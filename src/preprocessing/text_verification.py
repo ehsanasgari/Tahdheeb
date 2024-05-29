@@ -19,3 +19,9 @@ class ArabicTextVerify(object):
 
         # Calculate the proportion of Arabic content
         return len(filtered_text) / len(text) if text else 0
+
+    def contains_diacritics(self, text):
+        return bool(ArabicDiacritics.diacritics_re.search(text))
+
+    def diacritics_ratio( word):
+        return (len(ArabicDiacritics.diacritics_re.findall(word)) / len(word))

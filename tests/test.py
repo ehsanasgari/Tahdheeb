@@ -27,5 +27,9 @@ text = ASP.get_arabic_normal(text, extensive_normalization=True)
 print('\ntext after extensive normalizing:\n', text, '\n-----------\n')
 
 
+text = 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'
 
+print('\ntext before diac removal:\n', text, '\n-----------\n')
+text = ASP.get_arabic_normal(text,  extensive_normalization=False, diacritics_removal=True)
+print('\ntext after diac removal:\n', text, '\n-----------\n')
 

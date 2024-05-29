@@ -52,7 +52,7 @@ class ArabicTextProcess(object):
 
 
 
-    def get_arabic_normal(self, text, extensive_normalization=False):
+    def get_arabic_normal(self, text, extensive_normalization=False, diacritics_removal=False):
 
         for old, new in ArabicChars.replacements:
             text = re.sub(old, new, text)
@@ -82,6 +82,12 @@ class ArabicTextProcess(object):
             two_repeat = re.sub(self.general_repeat, r"\1\1", word)
             text = text.replace(word, two_repeat)
 
-        cleaned_text = re.sub(self.ArabicChars.allowed_chars_pattern_normalized, '', text)
+        text = re.sub(self.ArabicChars.allowed_chars_pattern_normalized, '', text)
 
-        return cleaned_text
+        if diacritics_removal:
+            text = self.remove_diacritics(text)
+
+        return text
+
+    def remove_diacritics(self, text):
+        return ArabicDiacritics.diacritics_re.sub('', text)

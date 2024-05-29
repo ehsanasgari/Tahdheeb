@@ -58,7 +58,52 @@ print('\nText after normalizing:\n', text, '\n-----------\n')
 # Normalize the text (extensive normalization)
 text = ASP.get_arabic_normal(text, extensive_normalization=True)
 print('\nText after extensive normalizing:\n', text, '\n-----------\n')
+
+text = 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'
+
+print('\ntext before diac removal:\n', text, '\n-----------\n')
+text = ASP.get_arabic_normal(text,  extensive_normalization=False, diacritics_removal=True)
+print('\ntext after diac removal:\n', text, '\n-----------\n')
+
+
 ```
+
+#### Output
+
+````
+Ratio of Arabic text: 0.7107843137254902
+
+text before struct improving:
+ الـــــــــسلام    عليكم . كيـــف    حالك ؟ أتـــمنى أن تكون بــــــخير .أ نحنو  هنا للمســـــاعدة ...هل  تريــــد شيء مـــا؟  الرجـــــــاء    إبلاغن ا بــــأي وقــــت! في ٢دقيقه شكرا ، جزيــــلا Thanks! 
+-----------
+
+
+text after struct improving:
+ الـــــــــسلام عليكم. كيـــف حالك؟ أتـــمنى أن تكون بــــــخير. أ نحنو هنا للمســـــاعدة... هل تريــــد شيء مـــا؟ الرجـــــــاء إبلاغن ا بــــأي وقــــت! في ٢ دقيقه شكرا، جزيــــلا! 
+-----------
+
+
+text after normalizing:
+ السلام عليكم. كيف حالك؟ أتمنى أن تكون بخير. أ نحنو هنا للمساعدة... هل تريد شيء ما؟ الرجاء إبلاغن ا بأي وقت! في 2 دقيقه شكرا، جزيلا! 
+-----------
+
+
+text after extensive normalizing:
+ السلام علىكم. كىف حالك؟ اتمنى ان تكون بخىر. ا نحنو هنا للمساعده... هل ترىد شىء ما؟ الرجاء ابلاغن ا باى وقت! فى 2 دقىقه شكرا، جزىلا! 
+-----------
+
+text before diac removal:
+ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ 
+-----------
+
+
+text after diac removal:
+ بسم الله الرحمن الرحيم 
+-----------
+
+````
+
+
 
 ### Explanation
 

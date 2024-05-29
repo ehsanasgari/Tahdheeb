@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name='Tahdheeb',
-    version='0.1.0',
+    version='0.1.1',
     author='Ehsaneddin Asgari and Yassine Elkheir',
-    author_email='easgari@hbku.edu.qa',
+    author_email='easgari@hbku.edu.qa/yelkheir@hbku.edu.qa',
     description='An Arabic Preprocessing Toolkit for Pretraining of LLM',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
